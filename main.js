@@ -2,6 +2,14 @@ const numeroSenha = document.querySelector('.parametro-senha__texto');
 let tamanhoSenha = 12;
 numeroSenha.textContent = tamanhoSenha;
 
+const letrasMaisculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
+const numeros = '0123456789';
+const simbolos = '!@#$%^&*~?';
+
+const campoSenha = document.querySelector('#campo-senha');
+const checkbox = document.querySelectorAll('.checkbox');
+const forcaSenha = document.querySelector('.forca');
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 
 botoes[0].onclick = diminuiTamanho;
@@ -23,19 +31,40 @@ function aumentaTamanho(){
     gerarSenha()
 }
 
-const campoSenha = document.querySelector('#campo-senha');
-
-const letrasMaisculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-
-
-function gerarSenha () {
-    let senha = '';
-    for (let i =0; i < tamanhoSenha; i++){
-        let numeroAleatorio = Math.random () *letrasMaisculas.length
-        numeroAleatorio = Math.floor(numeroAleatorio);
-        senha = senha + letrasMaisculas[numeroAleatorio];
-    };
-    campoSenha.value = senha;
+for (i=0; i < checkbox.length;i++){
+    checkbox[i].onclick = gerarSenha;
 }
 
+gerarSenha();
+
+function gerarSenha () {
+    let alfabeto = '';
+    if(checkbox[0].checked){
+    alfabeto = alfabeto + letrasMaisculas;
+}
+    if(checkbox[1].checked){
+    alfabeto = alfabeto + letrasMinusculas;
+}
+    if(checkbox[2].checked){
+    alfabeto = alfabeto + numeros;
+}
+    if(checkbox[3].checked){
+    alfabeto = alfabeto + simbolos;
+}
+    console.log(alfabeto);
+    let senha = '';
+    for (let i =0; i < tamanhoSenha; i++){
+        let numeroAleatorio = Math.random () *alfabeto.length
+        numeroAleatorio = Math.floor(numeroAleatorio);
+        senha = senha + alfabeto[numeroAleatorio];
+    };
+    campoSenha.value = senha;
+    classificaSenha();
+}
+
+function classificaSenha(){
+    forcaSenha.classList.remove('fraca','media','forte');
+    if (tamanhoSenha > 11){
+        forcaSenha.classList.add('forte');
+    }
+}
